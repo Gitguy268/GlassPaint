@@ -268,6 +268,11 @@ const menuDefinition = [
 				target: 'image/auto_adjust.auto_adjust'
 			},
 			{
+				name: 'White Balance',
+				ellipsis: true,
+				target: 'image/white_balance.white_balance'
+			},
+			{
 				name: 'Decrease Color Depth',
 				target: 'image/decrease_colors.decrease_colors'
 			},

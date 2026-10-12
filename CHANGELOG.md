@@ -14,6 +14,7 @@ GlassPaint starts from miniPaint 4.14.3 (commit `a79733e`). Upstream history: ht
 - AI > Upscale 2x: Swin2SR super-resolution, processed in tiles. Up to 1280 px with WebGPU, 768 px with WebAssembly.
 - PSD import (upstream issue #165): open or drop a `.psd` and each layer with pixels becomes an image layer with its name, position, opacity, visibility and blend mode. Uses `ag-psd` (MIT), downloaded only when a PSD is opened. Import only.
 - Tool settings (brush size, pressure, eraser shape and so on) are remembered between visits (upstream issue #368).
+- Image > White Balance (upstream issue #319): automatic (grey world), from a picked color that should be neutral, or by hand with temperature and tint.
 - `MODELS.md` with every model's source, licence and size.
 - AI runtime (`src/js/libs/ai-runtime.js`): Transformers.js loaded on first use, WebGPU with WebAssembly fallback, download progress bar, models cached by the browser.
 - About dialog credits miniPaint.

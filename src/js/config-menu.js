@@ -588,6 +588,10 @@ const menuDefinition = [
 			{
 				name: 'Select Object',
 				target: 'ai/select_object.select_object'
+			},
+			{
+				name: 'Upscale 2x',
+				target: 'ai/upscale.upscale'
 			}
 		]
 	},

@@ -56,7 +56,7 @@ The tracker has very little reaction data: of 44 open issues, one has 4 👍, th
 ## Scope cuts
 
 - **Select Object returns a rectangle plus a cut-out, not a freeform selection.** miniPaint's selection is `{x, y, width, height}`; delete and copy work on that rectangle. A pixel-mask selection would mean rewriting selection, copy, delete and crop. Select Object shows the mask, sets the selection to its bounding box and can cut the object out to a new layer. The same limit rules out #312's add/subtract.
-- **Upscale is limited in input size.** A 2x upscale of a 4000x3000 image in a browser tab would stall or run out of memory.
+- **Upscale is limited in input size**: 1280 px on the longest side with WebGPU, 768 px with WebAssembly. The model needs about 1.3 s per 192 px tile on WebGPU and 3.7 s on WebAssembly, so a 4000x3000 image would take many minutes.
 - **Auto-enhance and Remove Object (inpainting) are not built** unless time is left over. miniPaint already has Auto Adjust Colors and Content Fill.
 
 ## Decisions log

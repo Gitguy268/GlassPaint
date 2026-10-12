@@ -10,6 +10,9 @@ GlassPaint starts from miniPaint 4.14.3 (commit `a79733e`). Upstream history: ht
 - Theme `auto` (new default) follows the system light/dark setting. `dark`, `light` and `green` remain.
 - Opaque panels under `prefers-reduced-transparency`, no transitions under `prefers-reduced-motion`.
 - AI menu with Remove Background: runs U-2-Netp (5 MB) or IS-Net (179 MB) in the browser, feather and decontaminate sliders, outputs a cut-out and a mask layer as one undo step.
+- AI > Select Object (tool in the sidebar): click an object to get its mask with SlimSAM, Shift+click adds a point, Alt+click excludes one. Cut the object out to a new layer or pass its bounding box to the selection tool.
+- AI > Upscale 2x: Swin2SR super-resolution, processed in tiles. Up to 1280 px with WebGPU, 768 px with WebAssembly.
+- `MODELS.md` with every model's source, licence and size.
 - AI runtime (`src/js/libs/ai-runtime.js`): Transformers.js loaded on first use, WebGPU with WebAssembly fallback, download progress bar, models cached by the browser.
 - About dialog credits miniPaint.
 - `ARCHITECTURE.md`, `PLAN.md`, this changelog.

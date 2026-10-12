@@ -1,6 +1,6 @@
 /**
- * miniPaint - https://github.com/viliusle/miniPaint
- * author: Vilius L.
+ * GlassPaint, based on miniPaint - https://github.com/viliusle/miniPaint
+ * miniPaint author: Vilius L.
  */
 
 //css
@@ -24,6 +24,7 @@ import Base_search_class from './core/base-search.js';
 import File_open_class from './modules/file/open.js';
 import File_save_class from './modules/file/save.js';
 import * as Actions from './actions/index.js';
+import Glass_class from './libs/glass.js';
 
 window.addEventListener('load', function (e) {
 	// Initiate app
@@ -55,4 +56,5 @@ window.addEventListener('load', function (e) {
 	// Render all
 	GUI.init();
 	Layers.init();
+	new Glass_class().init();
 }, false);

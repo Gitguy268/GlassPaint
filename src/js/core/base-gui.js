@@ -223,6 +223,11 @@ class Base_gui_class {
 			return undefined;
 		});
 
+		//theme "auto" follows the system
+		window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function () {
+			_this.change_theme();
+		});
+
 		document.getElementById('canvas_minipaint').addEventListener('contextmenu', function (e) {
 			e.preventDefault();
 		}, false);
@@ -481,6 +486,10 @@ class Base_gui_class {
 			else {
 				theme_name = this.Tools_settings.get_setting('theme');
 			}
+		}
+
+		if(theme_name == 'auto'){
+			theme_name = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
 		}
 
 		for(var i in config.themes){

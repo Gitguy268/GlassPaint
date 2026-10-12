@@ -1,9 +1,435 @@
 /*
- * GlassPaint theme. Every GlassPaint style lives in this file; change the variables to re-theme.
+ * GlassPaint theme ("Liquid Glass"). Every GlassPaint style lives in this file.
+ *
+ * To re-theme, change the variables in the three blocks below (dark, light, green). The first group in each
+ * block is the glass itself, the second group feeds the variables miniPaint already used.
+ * Refraction along the rim of the toolbar and dialogs is added by src/js/libs/glass.js (Chromium only),
+ * other browsers get the same panels with plain blur.
  */
 
+/* ========== variables ===================================================== */
+
+/* on body, not :root: the theme class sits on body and variables that point at other variables must resolve there */
+body {
+	/* dark (default) */
+	--glass-tint: rgba(34, 36, 46, 0.52);
+	--glass-tint-strong: rgba(34, 36, 46, 0.72);
+	--glass-solid: #262830;
+	--glass-blur: 22px;
+	--glass-saturation: 170%;
+	--glass-edge: rgba(255, 255, 255, 0.30);
+	--glass-edge-soft: rgba(255, 255, 255, 0.07);
+	--glass-inner: rgba(0, 0, 0, 0.45);
+	--glass-drop: rgba(0, 0, 0, 0.32);
+	--glass-hairline: rgba(255, 255, 255, 0.10);
+	--glass-scrim: rgba(0, 0, 0, 0.28);
+	--glass-radius: 16px;
+	--glass-radius-small: 8px;
+	--glass-gap: 8px;
+	--glass-refraction: 46;		/* how far the rim bends the backdrop, px. 0 = off */
+	--glass-bezel: 16;			/* width of the bending rim, px */
+	--glass-refract-blur: 7px;	/* blur on refracting panels, lower so the bend stays visible */
+	--glass-wallpaper:
+		radial-gradient(55vw 55vh at 0% 0%, rgba(58, 108, 255, 0.42), transparent 70%),
+		radial-gradient(45vw 60vh at 100% 12%, rgba(186, 84, 255, 0.34), transparent 70%),
+		radial-gradient(55vw 50vh at 88% 100%, rgba(0, 196, 180, 0.26), transparent 70%),
+		radial-gradient(40vw 55vh at 0% 100%, rgba(255, 122, 80, 0.26), transparent 70%),
+		#15161b;
+	--glass-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	--accent: #0a84ff;
+	--accent-text: #ffffff;
+
+	--background: #15161b;
+	--text-color: #f2f2f7;
+	--text-color-muted: #a9abb8;
+	--link-color: #6cb6ff;
+	--section-background-color: transparent;
+	--area-background-color: rgba(255, 255, 255, 0.07);
+	--block-background-color: transparent;
+	--header-background-color: transparent;
+	--button-background-color: rgba(255, 255, 255, 0.09);
+	--button-background-color-hover: rgba(255, 255, 255, 0.18);
+	--button-background-color-active: rgba(10, 132, 255, 0.28);
+	--button-shadow-color: rgba(0, 0, 0, 0.25);
+	--button-text-color-active: #7dbcff;
+	--button-border-radius: var(--glass-radius-small);
+	--button-toggle-background-color: rgba(255, 255, 255, 0.16);
+	--button-toggle-background-color-hover: rgba(255, 255, 255, 0.16);
+	--input-background-color: rgba(0, 0, 0, 0.28);
+	--input-background-color-hover: rgba(0, 0, 0, 0.42);
+	--input-text-color: #f2f2f7;
+	--input-border-color: rgba(255, 255, 255, 0.13);
+	--input-border-color-active: var(--accent);
+	--input-border-radius: var(--glass-radius-small);
+	--input-group-border-color: rgba(255, 255, 255, 0.13);
+	--menu-background-color: transparent;
+	--menu-icons-filter: invert(1);
+	--menu-icons-filter-active: invert(1);
+	--menu-text-color: #e6e6ee;
+	--menu-dropdown-background-color: var(--glass-tint-strong);
+	--menu-dropdown-border-color: transparent;
+	--menu-dropdown-text-color: var(--text-color);
+	--menu-dropdown-text-muted-color: var(--text-color-muted);
+	--menu-dropdown-hover-background-color: var(--accent);
+	--menu-dropdown-hover-text-color: var(--accent-text);
+	--menu-dropdown-divider-color: var(--glass-hairline);
+	--background-color-active: var(--accent);
+	--background-color-hover: rgba(255, 255, 255, 0.16);
+	--text-color-active: var(--accent-text);
+	--border-color: rgba(255, 255, 255, 0.14);
+	--scrollbar-track-color: transparent;
+	--scrollbar-thumb-color: rgba(255, 255, 255, 0.22);
+	--mobile-menu-toggle-filter: invert(1);
+	accent-color: var(--accent);
+}
+body.theme-light {
+	--glass-tint: rgba(255, 255, 255, 0.50);
+	--glass-tint-strong: rgba(255, 255, 255, 0.74);
+	--glass-solid: #f2f3f7;
+	--glass-edge: rgba(255, 255, 255, 0.95);
+	--glass-edge-soft: rgba(255, 255, 255, 0.45);
+	--glass-inner: rgba(60, 70, 110, 0.20);
+	--glass-drop: rgba(40, 48, 80, 0.18);
+	--glass-hairline: rgba(0, 0, 0, 0.09);
+	--glass-scrim: rgba(40, 48, 80, 0.16);
+	--glass-wallpaper:
+		radial-gradient(55vw 55vh at 0% 0%, rgba(110, 160, 255, 0.60), transparent 70%),
+		radial-gradient(45vw 60vh at 100% 12%, rgba(214, 150, 255, 0.50), transparent 70%),
+		radial-gradient(55vw 50vh at 88% 100%, rgba(110, 226, 210, 0.50), transparent 70%),
+		radial-gradient(40vw 55vh at 0% 100%, rgba(255, 190, 150, 0.50), transparent 70%),
+		#e6e9f2;
+	--accent: #007aff;
+
+	--background: #e6e9f2;
+	--text-color: #1c1c1e;
+	--text-color-muted: #5c5e6b;
+	--link-color: #0063d1;
+	--section-background-color: transparent;
+	--area-background-color: rgba(255, 255, 255, 0.45);
+	--block-background-color: transparent;
+	--header-background-color: transparent;
+	--button-background-color: rgba(255, 255, 255, 0.55);
+	--button-background-color-hover: rgba(255, 255, 255, 0.9);
+	--button-background-color-active: rgba(0, 122, 255, 0.16);
+	--button-shadow-color: rgba(40, 48, 80, 0.10);
+	--button-text-color-active: #0063d1;
+	--button-toggle-background-color: rgba(0, 0, 0, 0.14);
+	--button-toggle-background-color-hover: rgba(0, 0, 0, 0.14);
+	--input-background-color: rgba(255, 255, 255, 0.62);
+	--input-background-color-hover: rgba(255, 255, 255, 0.9);
+	--input-text-color: #1c1c1e;
+	--input-border-color: rgba(0, 0, 0, 0.12);
+	--input-group-border-color: rgba(0, 0, 0, 0.12);
+	--menu-background-color: transparent;
+	--menu-icons-filter: none;
+	--menu-icons-filter-active: invert(1);
+	--menu-text-color: #1c1c1e;
+	--menu-dropdown-hover-background-color: var(--accent);
+	--menu-dropdown-border-color: transparent;
+	--background-color-active: var(--accent);
+	--background-color-hover: rgba(0, 0, 0, 0.08);
+	--text-color-active: var(--accent-text);
+	--border-color: rgba(0, 0, 0, 0.12);
+	--scrollbar-track-color: transparent;
+	--scrollbar-thumb-color: rgba(0, 0, 0, 0.25);
+	--mobile-menu-toggle-filter: none;
+}
+body.theme-green {
+	/* miniPaint's green theme keeps its own colors, on green glass */
+	--glass-tint: rgba(28, 46, 4, 0.58);
+	--glass-tint-strong: rgba(28, 46, 4, 0.78);
+	--glass-solid: #1c2e04;
+	--glass-wallpaper:
+		radial-gradient(60vw 60vh at 0% 0%, rgba(88, 150, 14, 0.45), transparent 70%),
+		radial-gradient(50vw 60vh at 100% 100%, rgba(0, 150, 110, 0.30), transparent 70%),
+		#050702;
+	--accent: #58960e;
+	--section-background-color: transparent;
+	--block-background-color: transparent;
+	--header-background-color: transparent;
+	--menu-background-color: transparent;
+	--menu-icons-filter-active: invert(1);
+	--text-color-active: #ffffff;
+	--input-background-color: rgba(0, 0, 0, 0.35);
+	--input-background-color-hover: rgba(0, 0, 0, 0.5);
+	--input-text-color: #dfeadc;
+	--input-border-color: rgba(255, 255, 255, 0.13);
+}
+
+/* ========== glass surfaces ================================================ */
+
+body {
+	background: var(--glass-wallpaper);
+	font-family: var(--glass-font);
+}
+.main_menu > ul.menu_bar,
+.submenu,
+.sidebar_left,
+.sidebar_right .block,
+.main_menu > ul.menu_dropdown,
+body #popups .popup,
+.ai_progress,
+.alertify-notifier .ajs-message {
+	background: var(--glass-tint);
+	-webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+	backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+	border: 0;
+	border-radius: var(--glass-radius);
+	/* specular edge, soft inner shadow, drop shadow */
+	box-shadow:
+		1px 1px 0 0 var(--glass-edge) inset,
+		-1px -1px 0 0 var(--glass-edge-soft) inset,
+		0 -14px 22px -18px var(--glass-inner) inset,
+		0 8px 28px var(--glass-drop);
+}
+/* set by glass.js where the browser can refract the backdrop */
+.glass-refract {
+	backdrop-filter: var(--glass-refract) blur(var(--glass-refract-blur)) saturate(var(--glass-saturation)) !important;
+}
+
+/* ========== layout ======================================================== */
+
+.wrapper {
+	top: calc(30px + var(--glass-gap));
+	left: var(--glass-gap);
+	right: var(--glass-gap);
+	bottom: var(--glass-gap);
+	gap: var(--glass-gap);
+}
+.submenu,
+.sidebar_left,
+.sidebar_right {
+	margin: 0;
+}
+.loaded .canvas_wrapper {
+	box-shadow: 0 12px 40px var(--glass-drop);
+}
+
+/* menu bar */
+.main_menu > ul.menu_bar {
+	border-radius: 0;
+	box-shadow: 0 -1px 0 0 var(--glass-hairline) inset;
+}
+.main_menu > ul.menu_bar > li {
+	padding: 3px 1px;
+}
+.main_menu > ul.menu_bar > li > a {
+	font-size: 13px;
+	border-radius: 6px;
+	transition: background-color 0.12s;
+}
+.main_menu > ul.menu_bar > li > a:focus {
+	box-shadow: 0 0 0 2px var(--accent) inset;
+}
+.main_menu > ul.menu_bar > li > a[aria-expanded="true"] {
+	background: var(--accent);
+	color: var(--accent-text);
+}
+.main_menu > ul.menu_dropdown {
+	background: var(--glass-tint-strong);
+	border-radius: 12px;
+	padding: 5px;
+	min-width: 190px;
+	margin-top: 4px;
+}
+.main_menu > ul.menu_dropdown > li > a {
+	border-radius: 7px;
+	font-size: 13px;
+	height: 28px;
+	line-height: 28px;
+}
+.main_menu > ul.menu_dropdown > li > hr {
+	margin: 5px 8px;
+}
+.main_menu > ul.menu_dropdown > li > a[target="_blank"]::after {
+	filter: var(--menu-icons-filter);
+}
+
+/* tool options bar */
+.submenu {
+	padding: 0 6px;
+}
+.logo {
+	width: 122px;
+	letter-spacing: 0.01em;
+}
+.logo:after {
+	background-image: url('images/glasspaint.svg');
+	filter: none;
+}
+.attributes {
+	background: transparent;
+	box-shadow: none;
+	width: calc(100% - 137px);
+}
+
+/* toolbar */
+.sidebar_left {
+	width: 44px;
+	padding: 4px;
+	gap: 2px;
+	scrollbar-width: none;
+}
+.sidebar_left::-webkit-scrollbar {
+	display: none;
+}
+.sidebar_left .item {
+	width: 36px;
+	height: 29px;
+	margin: 0;
+	background-color: transparent;
+	border-radius: var(--glass-radius-small);
+	transition: background-color 0.12s;
+}
+.sidebar_left .item.active {
+	box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.35) inset, 0 2px 8px var(--glass-drop);
+}
+.sidebar_left .ai_select:after { background-image: url('images/icons/ai_select.svg'); }
+@media screen and (max-height: 760px) {
+	/* short screens: two columns instead of a scrolling toolbar */
+	.sidebar_left {
+		width: 82px;
+	}
+}
+
+/* right panels */
+.sidebar_right {
+	gap: var(--glass-gap);
+	width: 208px;
+	padding: 0 2px 2px 0;
+	scrollbar-width: none;
+}
+.sidebar_right::-webkit-scrollbar {
+	display: none;
+}
+.sidebar_right .block {
+	margin-bottom: 0;
+	flex-shrink: 0;
+}
+.block h2 {
+	padding: 7px 10px 6px 12px;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	border-radius: var(--glass-radius) var(--glass-radius) 0 0;
+	box-shadow: 0 -1px 0 0 var(--glass-hairline) inset;
+}
+.block h2.toggled {
+	box-shadow: none;
+	border-radius: var(--glass-radius);
+}
+.block h2.toggle:before {
+	right: 12px;
+	top: 13px;
+}
+.block .content {
+	padding: 9px 8px;
+}
+.layers_list .layer_name {
+	height: 22px;
+	padding: 2px 8px 3px 8px;
+	border-radius: 6px;
+}
+.layers_list .arrow_down,
+.layers_list .visibility,
+.layers_list .delete {
+	height: 22px;
+}
+.layer_add,
+.layers_arrow {
+	border-radius: 6px;
+	padding: 2px 9px;
+}
+.color_area {
+	border-radius: 6px;
+}
+.details-content {
+	height: 214px;
+}
+
+/* dialogs */
+body #popups .popup {
+	background: var(--glass-tint-strong);
+	border-radius: 20px;
+	box-shadow:
+		1px 1px 0 0 var(--glass-edge) inset,
+		-1px -1px 0 0 var(--glass-edge-soft) inset,
+		0 -14px 22px -18px var(--glass-inner) inset,
+		0 24px 70px var(--glass-drop),
+		0 0 0 100vmax var(--glass-scrim);
+}
+body #popups .popup h2 {
+	padding: 0 1.8rem;
+	font-size: 1.6rem;
+	font-weight: 600;
+	box-shadow: 0 -1px 0 0 var(--glass-hairline) inset;
+}
+body #popups .popup .dialog_content {
+	padding: 1.2rem 1.8rem;
+}
+body #popups .popup .buttons {
+	background: transparent;
+	border-top: 1px solid var(--glass-hairline);
+}
+body #popups .popup .button {
+	min-width: 84px;
+	padding: 6px 14px;
+	border-radius: 1000px;
+}
+body #popups .popup [data-id="popup_ok"] {
+	background: var(--accent);
+	border-color: transparent;
+	color: var(--accent-text);
+}
+body #popups .popup .close {
+	color: var(--text-color);
+	box-shadow: none;
+	margin: 12px 14px 0 0;
+}
+body #popups .popup canvas {
+	border-radius: 6px;
+}
+
+/* controls */
+button, input[type="button"], .ui_range, .sidebar_left .item, .layers_list .layer_name {
+	transition: background-color 0.12s, border-color 0.12s;
+}
+select option {
+	/* native lists ignore translucent backgrounds */
+	background: var(--glass-solid);
+	color: var(--text-color);
+}
+a:focus-visible, button:focus-visible, .sidebar_left .item:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 1px;
+}
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+::-webkit-scrollbar-track-piece {
+	background: var(--scrollbar-track-color);
+}
+::-webkit-scrollbar-thumb {
+	background: var(--scrollbar-thumb-color);
+	border-radius: 8px;
+}
+
+/* notifications */
+.alertify-notifier .ajs-message {
+	color: var(--text-color);
+	text-shadow: none;
+	border-left: 4px solid var(--accent);
+}
+.alertify-notifier .ajs-message.ajs-success {
+	border-left-color: #30d158;
+}
+.alertify-notifier .ajs-message.ajs-error {
+	border-left-color: #ff453a;
+}
+
 /* AI progress */
-.ai_progress{
+.ai_progress {
 	position: fixed;
 	left: 50%;
 	bottom: 24px;
@@ -12,14 +438,52 @@
 	display: flex;
 	align-items: center;
 	gap: 12px;
-	padding: 10px 16px;
-	background: var(--block-background-color);
-	border: 1px solid var(--border-color);
+	padding: 10px 18px;
+	border-radius: 1000px;
+	background: var(--glass-tint-strong);
 	color: var(--text-color);
+	white-space: nowrap;
 }
-.ai_progress[hidden]{
+.ai_progress[hidden] {
 	display: none;
 }
-.ai_progress progress{
+.ai_progress progress {
 	width: 160px;
+}
+
+/* ========== small screens ================================================= */
+
+@media screen and (max-width: 700px) {
+	.wrapper {
+		top: calc(50px + var(--glass-gap));
+	}
+	.sidebar_left, .sidebar_right {
+		background: var(--glass-tint-strong);
+	}
+}
+
+/* ========== accessibility ================================================= */
+
+@media (prefers-reduced-transparency: reduce) {
+	body {
+		background: var(--background);
+	}
+	.main_menu > ul.menu_bar,
+	.submenu,
+	.sidebar_left,
+	.sidebar_right .block,
+	.main_menu > ul.menu_dropdown,
+	body #popups .popup,
+	.ai_progress,
+	.alertify-notifier .ajs-message {
+		background: var(--glass-solid);
+		-webkit-backdrop-filter: none !important;
+		backdrop-filter: none !important;
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	*, *::before, *::after {
+		transition: none !important;
+		animation: none !important;
+	}
 }

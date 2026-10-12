@@ -5,8 +5,20 @@ GlassPaint starts from miniPaint 4.14.3 (commit `a79733e`). Upstream history: ht
 ## Unreleased
 
 ### Added
+- Liquid Glass interface: translucent menus, toolbar, panels, dialogs and notifications with blur, saturation, specular edges and inner shadows. All of it is in `src/css/glass.css` and driven by CSS variables.
+- Refraction along the rim of the toolbar and dialogs (`src/js/libs/glass.js`, SVG displacement map in `backdrop-filter`). Chromium only; Firefox and Safari get plain blur.
+- Theme `auto` (new default) follows the system light/dark setting. `dark`, `light` and `green` remain.
+- Opaque panels under `prefers-reduced-transparency`, no transitions under `prefers-reduced-motion`.
+- AI menu with Remove Background: runs U-2-Netp (5 MB) or IS-Net (179 MB) in the browser, feather and decontaminate sliders, outputs a cut-out and a mask layer as one undo step.
+- AI runtime (`src/js/libs/ai-runtime.js`): Transformers.js loaded on first use, WebGPU with WebAssembly fallback, download progress bar, models cached by the browser.
+- About dialog credits miniPaint.
 - `ARCHITECTURE.md`, `PLAN.md`, this changelog.
 - Playwright as a dev dependency.
 
 ### Changed
+- Renamed to GlassPaint (page title, logo, package name).
+- webpack `publicPath` is `auto`, so the build works from any sub-path.
 - `dist/` is no longer committed; run `npm run build`.
+
+### Measured
+- Zoom and pan on a 4000x3000 image in headless Chromium: median frame 16.7 ms and no frame over 33 ms, with the glass theme on and with it removed.

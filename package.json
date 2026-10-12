@@ -1,8 +1,11 @@
 {
-  "name": "miniPaint",
-  "version": "4.14.3",
-  "author": "Vilius L.",
-  "description": "Online graphics editing tool lets create, edit images using HTML5 technologies.",
+  "name": "glasspaint",
+  "version": "1.0.0",
+  "author": "Lucas Van De Weerd",
+  "contributors": [
+    "Vilius L. (miniPaint, https://github.com/viliusle/miniPaint)"
+  ],
+  "description": "Browser image editor with a Liquid Glass interface and on-device AI tools. Based on miniPaint.",
   "keywords": [
     "canvas",
     "drawing",

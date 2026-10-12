@@ -8,7 +8,10 @@ module.exports = {
 	output: {
 		path: path.resolve(__dirname, 'dist'),
 		filename: 'bundle.js',
-		publicPath: '/dist/'
+		chunkFilename: '[name].bundle.js',
+		assetModuleFilename: '[name][ext]',
+		// relative to bundle.js, so lazy chunks load from any sub-path (GitHub Pages)
+		publicPath: 'auto'
 	},
 	resolve: {
 		extensions: ['.js', '.css'],
@@ -51,6 +54,9 @@ module.exports = {
 		//contentBase: "./",
 		static: {
 			directory: path.resolve(__dirname, "./"),
+		},
+		devMiddleware: {
+			publicPath: '/dist/',
 		},
 	}
 };

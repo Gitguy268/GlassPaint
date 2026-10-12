@@ -1,0 +1,25 @@
+/*
+ * GlassPaint theme. Every GlassPaint style lives in this file; change the variables to re-theme.
+ */
+
+/* AI progress */
+.ai_progress{
+	position: fixed;
+	left: 50%;
+	bottom: 24px;
+	transform: translateX(-50%);
+	z-index: 200;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 10px 16px;
+	background: var(--block-background-color);
+	border: 1px solid var(--border-color);
+	color: var(--text-color);
+}
+.ai_progress[hidden]{
+	display: none;
+}
+.ai_progress progress{
+	width: 160px;
+}

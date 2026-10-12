@@ -578,6 +578,16 @@ const menuDefinition = [
 		]
 	},
 	{
+		name: 'AI',
+		children: [
+			{
+				name: 'Remove Background',
+				ellipsis: true,
+				target: 'ai/remove_background.remove_background'
+			}
+		]
+	},
+	{
 		name: 'Tools',
 		children: [
 			{

@@ -131,6 +131,52 @@ class Base_gui_class {
 		else{
 			config.guides_enabled = Boolean(guides_cookie);
 		}
+
+		this.load_tool_attributes();
+	}
+
+	/**
+	 * restores tool settings (brush size and so on) saved on the last visit.
+	 */
+	load_tool_attributes() {
+		var saved;
+		try {
+			saved = JSON.parse(localStorage.getItem('tool_attributes')) || {};
+		}
+		catch (error) {
+			return;
+		}
+		for (var tool of config.TOOLS) {
+			for (var key in saved[tool.name]) {
+				var attribute = tool.attributes[key];
+				var value = saved[tool.name][key];
+				if (typeof attribute == 'object' && typeof attribute.value == typeof value) {
+					attribute.value = value;
+				}
+				else if (typeof attribute == typeof value) {
+					tool.attributes[key] = value;
+				}
+			}
+		}
+	}
+
+	save_tool_attributes() {
+		//not settings: "play" starts the animation, fonts may need a download first
+		var skip = ['play', 'font'];
+		var data = {};
+		for (var tool of config.TOOLS) {
+			data[tool.name] = {};
+			for (var key in tool.attributes) {
+				var attribute = tool.attributes[key];
+				if (!skip.includes(key)) {
+					data[tool.name][key] = typeof attribute == 'object' ? attribute.value : attribute;
+				}
+			}
+		}
+		try {
+			localStorage.setItem('tool_attributes', JSON.stringify(data));
+		}
+		catch (error) {}
 	}
 
 	render_main_gui() {
@@ -221,6 +267,10 @@ class Base_gui_class {
 				e.returnValue = '';
 			}
 			return undefined;
+		});
+
+		window.addEventListener('pagehide', function () {
+			_this.save_tool_attributes();
 		});
 
 		//theme "auto" follows the system

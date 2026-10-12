@@ -11,6 +11,7 @@ import GUI_colors_class from './gui/gui-colors.js';
 import GUI_layers_class from './gui/gui-layers.js';
 import GUI_information_class from './gui/gui-information.js';
 import GUI_details_class from './gui/gui-details.js';
+import GUI_history_class from './gui/gui-history.js';
 import GUI_menu_class from './gui/gui-menu.js';
 import Tools_translate_class from './../modules/tools/translate.js';
 import Tools_settings_class from './../modules/tools/settings.js';
@@ -63,6 +64,7 @@ class Base_gui_class {
 		this.GUI_layers = new GUI_layers_class(this);
 		this.GUI_information = new GUI_information_class(this);
 		this.GUI_details = new GUI_details_class(this);
+		this.GUI_history = new GUI_history_class();
 		this.GUI_menu = new GUI_menu_class();
 		this.Tools_translate = new Tools_translate_class();
 		this.Tools_settings = new Tools_settings_class();
@@ -190,6 +192,7 @@ class Base_gui_class {
 		this.GUI_layers.render_main_layers();
 		this.GUI_information.render_main_information();
 		this.GUI_details.render_main_details();
+		this.GUI_history.render_main_history();
 		this.GUI_menu.render_main();
 		this.load_saved_changes();
 
@@ -332,7 +335,7 @@ class Base_gui_class {
 
 			var target = document.getElementById(targets[i].dataset.target);
 			var saved = this.Helper.getCookie(targets[i].dataset.target);
-			if (saved === 0) {
+			if (saved === 0 || (saved === null && targets[i].dataset.collapsed != undefined)) {
 				targets[i].classList.toggle('toggled');
 				target.classList.add('hidden');
 			}

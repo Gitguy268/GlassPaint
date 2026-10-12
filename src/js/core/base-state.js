@@ -114,6 +114,7 @@ class Base_state_class {
 		if (error_during_free) {
 			alertify.error('A problem occurred while removing undo history. It\'s suggested you save your work and refresh the page in order to free up memory.');
 		}
+		this.Base_gui.GUI_history.render_history();
 		return { status: 'completed' };
 	}
 
@@ -130,6 +131,7 @@ class Base_state_class {
 			const action = this.action_history[this.action_history_index];
 			await action.do();
 			this.action_history_index++;
+			this.Base_gui.GUI_history.render_history();
 		} else {
 			alertify.success('There\'s nothing to redo', 3);
 		}
@@ -139,6 +141,7 @@ class Base_state_class {
 		if (this.can_undo()) {
 			this.action_history_index--;
 			await this.action_history[this.action_history_index].undo();
+			this.Base_gui.GUI_history.render_history();
 		} else {
 			alertify.success('There\'s nothing to undo', 3);
 		}
@@ -148,6 +151,7 @@ class Base_state_class {
 		if (this.can_undo()) {
 			await this.undo_action();
 			this.action_history.pop();
+			this.Base_gui.GUI_history.render_history();
 		}
 	}
 
@@ -191,6 +195,7 @@ class Base_state_class {
 		if (has_error) {
 			alertify.error('A problem occurred while removing undo history. It\'s suggested you save your work and refresh the page in order to free up memory.');
 		}
+		this.Base_gui.GUI_history.render_history();
 		return {
 			total_memory_freed,
 			total_database_freed

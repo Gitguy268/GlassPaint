@@ -347,6 +347,38 @@ body #popups .popup,
 	height: 214px;
 }
 
+/* history */
+.history_list {
+	position: relative;
+	max-height: 150px;
+	overflow-y: auto;
+}
+.history_list .item {
+	display: block;
+	width: 100%;
+	padding: 3px 8px;
+	margin-bottom: 2px;
+	text-align: left;
+	font-size: 12px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	border: 0;
+	border-radius: 6px;
+	box-shadow: none;
+	background: transparent;
+}
+.history_list .item:hover {
+	background-color: var(--background-color-hover);
+}
+.history_list .item.active {
+	background-color: var(--background-color-active);
+	color: var(--text-color-active);
+}
+.history_list .item.undone {
+	opacity: 0.45;
+}
+
 /* dialogs */
 body #popups .popup {
 	background: var(--glass-tint-strong);

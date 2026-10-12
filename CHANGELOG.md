@@ -15,6 +15,7 @@ GlassPaint starts from miniPaint 4.14.3 (commit `a79733e`). Upstream history: ht
 - PSD import (upstream issue #165): open or drop a `.psd` and each layer with pixels becomes an image layer with its name, position, opacity, visibility and blend mode. Uses `ag-psd` (MIT), downloaded only when a PSD is opened. Import only.
 - Tool settings (brush size, pressure, eraser shape and so on) are remembered between visits (upstream issue #368).
 - Image > White Balance (upstream issue #319): automatic (grey world), from a picked color that should be neutral, or by hand with temperature and tint.
+- History panel in the right sidebar: lists every undoable step, click one to jump back or forward to it. Collapsed until first opened.
 - `MODELS.md` with every model's source, licence and size.
 - AI runtime (`src/js/libs/ai-runtime.js`): Transformers.js loaded on first use, WebGPU with WebAssembly fallback, download progress bar, models cached by the browser.
 - About dialog credits miniPaint.

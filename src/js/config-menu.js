@@ -584,6 +584,10 @@ const menuDefinition = [
 				name: 'Remove Background',
 				ellipsis: true,
 				target: 'ai/remove_background.remove_background'
+			},
+			{
+				name: 'Select Object',
+				target: 'ai/select_object.select_object'
 			}
 		]
 	},

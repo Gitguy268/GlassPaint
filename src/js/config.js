@@ -132,6 +132,17 @@ config.TOOLS = [
 		},
 	},
 	{
+		name: 'ai_select',
+		title: 'AI Select Object',
+		on_update: 'on_params_update',
+		on_leave: 'on_leave',
+		attributes: {
+			feather: 1,
+			cut_out: true,
+			box_select: true,
+		},
+	},
+	{
 		name: 'fill',
 		attributes: {
 			power: 5,

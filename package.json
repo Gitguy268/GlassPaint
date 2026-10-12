@@ -1,6 +1,6 @@
 {
   "name": "glasspaint",
-  "version": "1.0.0",
+  "version": "5.0.0",
   "author": "Lucas Van De Weerd",
   "contributors": [
     "Vilius L. (miniPaint, https://github.com/viliusle/miniPaint)"
@@ -40,6 +40,7 @@
   "dependencies": {
     "@babel/runtime": "^7.14.5",
     "@huggingface/transformers": "^4.3.1",
+    "ag-psd": "^31.0.3",
     "alertifyjs": "^1.13.1",
     "blueimp-canvas-to-blob": "^3.28.0",
     "exif-js": "^2.3.0",

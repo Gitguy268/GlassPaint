@@ -12,6 +12,10 @@ import semver_compare from './../../../../node_modules/semver-compare/';
 
 var instance = null;
 
+//Photoshop blend modes that canvas can draw as well, all others fall back to normal
+const PSD_BLEND_MODES = ['multiply', 'screen', 'overlay', 'darken', 'lighten', 'color-dodge', 'color-burn', 'hard-light',
+	'soft-light', 'difference', 'exclusion', 'hue', 'saturation', 'color', 'luminosity'];
+
 /** 
  * manages files / open
  * 
@@ -294,14 +298,19 @@ class File_open_class {
 
 		for (var i = 0, f; i < files.length; i++) {
 			f = files[i];
-			if (!f.type.match('image.*') && !f.name.match('.json')) {
+			var is_psd = /\.psd$/i.test(f.name);
+			if (!is_psd && !f.type.match('image.*') && !f.name.match('.json')) {
 				if(dir_opened == false) {
-					alertify.error('Wrong file type, must be image or json.');
+					alertify.error('Wrong file type, must be image, json or psd.');
 				}
 				continue;
 			}
 			if (files.length == 1) {
 				this.SAVE_NAME = f.name.split('.')[f.name.split('.').length - 2];
+			}
+			if (is_psd) {
+				await this.open_psd(f);
+				continue;
 			}
 
 			var FR = new FileReader();
@@ -669,6 +678,86 @@ class File_open_class {
 		await app.State.do_action(
 			new app.Actions.Bundle_action('open_json_file', 'Open JSON File', actions)
 		);
+	}
+
+	/**
+	 * opens Photoshop document. Every layer that has pixels becomes an image layer with its name, position,
+	 * opacity, visibility and blend mode. Groups are flattened, text and effects arrive as pixels,
+	 * adjustment layers are skipped.
+	 *
+	 * @param {File} file
+	 */
+	async open_psd(file) {
+		var psd;
+		try {
+			//parser is only downloaded when a psd is opened
+			var ag_psd = await import(/* webpackChunkName: "psd" */ 'ag-psd');
+			psd = ag_psd.readPsd(await file.arrayBuffer());
+		}
+		catch (error) {
+			alertify.error('Could not read PSD file: ' + error.message);
+			return;
+		}
+
+		var json = {
+			info: {
+				width: psd.width,
+				height: psd.height,
+				version: VERSION,
+			},
+			layers: [],
+			data: [],
+		};
+		var skipped = 0;
+		var add_layers = function (children, parent_visible, parent_opacity) {
+			for (var child of children) {
+				var visible = parent_visible && !child.hidden;
+				var opacity = parent_opacity * (child.opacity ?? 1);
+				if (child.children) {
+					add_layers(child.children, visible, opacity);
+					continue;
+				}
+				if (!child.canvas || child.canvas.width == 0 || child.canvas.height == 0) {
+					skipped++;
+					continue;
+				}
+				var id = json.layers.length + 1;
+				var composition = (child.blendMode || 'normal').replace(/ /g, '-');
+				json.layers.push({
+					id: id,
+					name: child.name || 'Layer ' + id,
+					type: 'image',
+					x: child.left || 0,
+					y: child.top || 0,
+					width: child.canvas.width,
+					height: child.canvas.height,
+					width_original: child.canvas.width,
+					height_original: child.canvas.height,
+					visible: visible,
+					opacity: Math.round(opacity * 100),
+					order: id,
+					composition: PSD_BLEND_MODES.includes(composition) ? composition : 'source-over',
+				});
+				json.data.push({id: id, data: child.canvas.toDataURL('image/png')});
+			}
+		};
+		add_layers(psd.children || [], true, 1);
+
+		if (json.layers.length == 0 && psd.canvas) {
+			//file without layers, only the flattened picture
+			json.layers.push({id: 1, name: file.name, type: 'image', x: 0, y: 0, width: psd.width, height: psd.height,
+				width_original: psd.width, height_original: psd.height, visible: true, opacity: 100, order: 1});
+			json.data.push({id: 1, data: psd.canvas.toDataURL('image/png')});
+		}
+		if (json.layers.length == 0) {
+			alertify.error('This PSD file has no layers with pixels.');
+			return;
+		}
+
+		await this.load_json(json);
+		if (skipped > 0) {
+			alertify.warning(skipped + ' PSD layer(s) without pixels were skipped (adjustment layers, empty layers).');
+		}
 	}
 
 	/**

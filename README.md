@@ -4,6 +4,10 @@ Online image editor lets you create and edit images using HTML5 technologies. No
 
 miniPaint operates directly in the browser. You can create images by pasting from the clipboard (ctrl+v) or uploading from the computer (_using menu or drag & drop_). Nothing will be sent to any server. Everything stays in your browser. 
 
+<!-- live-links -->
+**Live:** [gitguy268.github.io/GlassPaint](https://gitguy268.github.io/GlassPaint/) · [glasspaint.vercel.app](https://glasspaint.vercel.app)
+<!-- /live-links -->
+
 <!-- run-steps:start -->
 ## Run it locally, step by step
 

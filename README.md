@@ -4,6 +4,33 @@ Online image editor lets you create and edit images using HTML5 technologies. No
 
 miniPaint operates directly in the browser. You can create images by pasting from the clipboard (ctrl+v) or uploading from the computer (_using menu or drag & drop_). Nothing will be sent to any server. Everything stays in your browser. 
 
+<!-- run-steps:start -->
+## Run it locally, step by step
+
+1. **Install [Node.js](https://nodejs.org) 22** or newer.
+
+2. **Get the code:**
+
+   ```sh
+   git clone https://github.com/Gitguy268/GlassPaint.git
+   cd GlassPaint
+   ```
+
+3. **Install the dependencies:**
+
+   ```sh
+   npm ci
+   ```
+
+4. **Start it.** This opens your browser by itself:
+
+   ```sh
+   npm run server
+   ```
+
+5. **Press `Ctrl+C`** in the terminal to stop.
+<!-- run-steps:end -->
+
 ## URL:
 **https://viliusle.github.io/miniPaint/**
 

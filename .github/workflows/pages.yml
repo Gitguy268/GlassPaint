@@ -24,7 +24,7 @@ jobs:
       - run: npm run site
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: _site/GlassPaint
   deploy:
     needs: build
     runs-on: ubuntu-latest
